@@ -1,0 +1,17 @@
+[Unit]
+Description=unjoin the incoming http and https request by hostname
+After=network.target
+
+[Service]
+ExecStart=/mnt/Project/DomainRouter/DomainRouter.js
+Restart=always
+User=nobody
+# Use 'nogroup' group for Ubuntu/Debian
+# use 'nobody' group for Fedora
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/mnt/Project/DomainRouter
+
+[Install]
+WantedBy=multi-user.target
