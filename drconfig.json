@@ -1,0 +1,10 @@
+{
+  "http": [
+    { "name": "mimapunk.hu", "port": 3001 },
+    { "name": "xn--kinetalld-61a.hu", "port": 3002 }
+  ],
+  "https": [
+    { "name": "mimapunk.hu", "port": 4001 },
+    { "name": "xn--kinetalld-61a.hu", "port": 4002 }
+  ]
+}

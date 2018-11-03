@@ -5,10 +5,10 @@ After=network.target
 [Service]
 ExecStart=/mnt/Project/DomainRouter/DomainRouter.js
 Restart=always
-User=nobody
+User=root
 # Use 'nogroup' group for Ubuntu/Debian
 # use 'nobody' group for Fedora
-Group=nogroup
+Group=root
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
 WorkingDirectory=/mnt/Project/DomainRouter

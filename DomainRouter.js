@@ -3,53 +3,33 @@
 const bouncy = require("bouncy");
 const fs = require("fs");
 const tls = require("tls");
+const config = require("./src/configParser")("/mnt/Project/webconfig.json");
 
 const http = bouncy(function(req, res, bounce) {
-  switch (req.headers.host) {
-    case "mimapunk.hu":
-      bounce(3001);
-      break;
-    case "xn--kinetalld-61a.hu":
-      bounce(3002);
-      break;
-  }
+  config.http.map(function(host) {
+    if (req.headers.host == host.name) {
+      bounce(host.port);
+    }
+  });
 });
 
-const cPath = "/etc/letsencrypt/live/";
-var certs = {
-  "mimapunk.hu": {
-    key: fs.readFileSync(cPath + "mimapunk.hu/privkey.pem", "utf8"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/mimapunk.hu/cert.pem", "utf8"),
-    ca: fs.readFileSync("/etc/letsencrypt/live/mimapunk.hu/chain.pem", "utf8")
-  },
-  "xn--kinetalld-61a.hu": {
-    key: fs.readFileSync(cPath + "xn--kinetalld-61a.hu/privkey.pem", "utf8"),
-    cert: fs.readFileSync(cPath + "xn--kinetalld-61a.hu/cert.pem", "utf8"),
-    ca: fs.readFileSync(cPath + "xn--kinetalld-61a.hu/chain.pem", "utf8")
-  }
-};
-console.log();
-
 var sslRouters = {
-  key: certs["mimapunk.hu"].key,
-  cert: certs["mimapunk.hu"].cert,
+  key: config.certs.default.key,
+  cert: config.certs.default.cert,
   SNICallback: function(host, cb) {
-    var context = tls.createSecureContext(certs[host]);
+    var context = tls.createSecureContext(config.certs[host]);
     cb(null, context);
   }
 };
 
 const https = bouncy(sslRouters, function(req, res, bounce) {
-  console.log(req.headers);
-  switch (req.headers.host) {
-    case "mimapunk.hu":
-      bounce(4001);
-      break;
-    case "xn--kinetalld-61a.hu":
-      bounce(4002);
-      break;
-  }
+  config.https.map(function(host) {
+    if (req.headers.host == host.name) {
+      bounce(host.port);
+    }
+  });
 });
 
+// ports from router virtualserver configuration
 http.listen(3000);
 https.listen(4000);
