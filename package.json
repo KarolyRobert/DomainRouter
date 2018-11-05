@@ -9,6 +9,7 @@
   "author": "RoGeR",
   "license": "ISC",
   "dependencies": {
-    "bouncy": "^3.2.2"
+    "bouncy": "^3.2.2",
+    "webconfigurator": "file:../webconfigurator"
   }
 }

@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 
 const bouncy = require("bouncy");
-const fs = require("fs");
 const tls = require("tls");
-const config = require("./src/configParser")("/mnt/Project/webconfig.json");
+const config = require("webconfigurator")({ router: true });
+
+console.log(process.env);
 
 const http = bouncy(function(req, res, bounce) {
+  var bounced = false;
   config.http.map(function(host) {
     if (req.headers.host == host.name) {
-      bounce(host.port);
+      bounced = true;
+      bounce(host.port, { headers: { ishttp: true } });
     }
   });
+  if (!bounced) {
+    res.statusCode = 404;
+    res.end("no such host");
+  }
 });
 
 var sslRouters = {
@@ -23,13 +30,18 @@ var sslRouters = {
 };
 
 const https = bouncy(sslRouters, function(req, res, bounce) {
+  var bounced = false;
   config.https.map(function(host) {
     if (req.headers.host == host.name) {
+      bounced = true;
       bounce(host.port);
     }
   });
+  if (!bounced) {
+    bounce("http://" + req.headers.host);
+  }
 });
 
 // ports from router virtualserver configuration
-http.listen(3000);
-https.listen(4000);
+http.listen(config.httpPort);
+https.listen(config.httpsPort);
