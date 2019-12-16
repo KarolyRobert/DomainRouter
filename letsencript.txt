@@ -1,0 +1,23 @@
+pi@pi4server:~ $ sudo certbot certonly --standalone -d mimapunk.hu -d xn--kinetalld-61a.hu
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator standalone, Installer None
+Obtaining a new certificate
+Performing the following challenges:
+http-01 challenge for mimapunk.hu
+http-01 challenge for xn--kinetalld-61a.hu
+Waiting for verification...
+Cleaning up challenges
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/mimapunk.hu/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/mimapunk.hu/privkey.pem
+   Your cert will expire on 2020-01-29. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot
+   again. To non-interactively renew *all* of your certificates, run
+   "certbot renew"
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
